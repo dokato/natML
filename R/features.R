@@ -7,6 +7,7 @@
 #' @return numeric with spine length
 #' @import nat
 #' @family neuron_scalars
+#' @export
 get_spine_length <- function(n) {
   nat:::total_cable(spine(n))
 }
@@ -17,6 +18,7 @@ get_spine_length <- function(n) {
 #' @return numeric with total cable length
 #' @import nat
 #' @family neuron_scalars
+#' @export
 get_cable_length <- function(n) {
   nat:::total_cable(n)
 }
@@ -26,6 +28,7 @@ get_cable_length <- function(n) {
 #' @param n (nat) neuron
 #' @return numeric with soma size
 #' @family neuron_scalars
+#' @export
 get_soma_size <- function(n) {
   n$d[n$StartPoint,]$W
 }
@@ -35,6 +38,7 @@ get_soma_size <- function(n) {
 #' @param n (nat) neuron
 #' @return numeric with soma size
 #' @family neuron_scalars
+#' @export
 get_radius <- function(n) {
   mean(n$d$W)
 }
@@ -45,6 +49,7 @@ get_radius <- function(n) {
 #' @return numeric with soma size
 #' @import nat
 #' @family neuron_scalars
+#' @export
 get_spine_radius <- function(n) {
   mean(spine(n)$d$W)
 }
@@ -55,6 +60,7 @@ get_spine_radius <- function(n) {
 #' @return numeric with soma size
 #' @import nat
 #' @family neuron_scalars
+#' @export
 get_n_branchpoints <- function(n) {
   sum(branchpoints(n))
 }

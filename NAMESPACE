@@ -2,5 +2,11 @@
 
 S3method(extract_features,neuronlist)
 export(extract_features)
+export(get_cable_length)
+export(get_n_branchpoints)
+export(get_radius)
+export(get_soma_size)
+export(get_spine_length)
+export(get_spine_radius)
 import(glue)
 import(nat)
