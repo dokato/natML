@@ -35,6 +35,8 @@ generate them}
 meant to be transformed to numeric (default: F)}
 
 \item{normalise}{what normalization to use}
+
+\item{...}{extra arguments}
 }
 \value{
 data frame with features

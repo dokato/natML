@@ -35,6 +35,7 @@ scale <- function(vec, na_rm = TRUE) {
 #' @param na_rm flag stating whether to ignore NA values or not
 #'
 #' @return vector with z-scored values
+#' @importFrom stats sd
 #' @family scaling
 zscore <- function(vec, na_rm = TRUE) {
   if (length(unique(vec)) == 1)

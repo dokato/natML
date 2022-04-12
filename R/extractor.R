@@ -30,6 +30,7 @@ extract_features <- function(neurons_list,
 }
 
 #' @description extract features from a neuronlist
+#' @param ... extra arguments
 #' @export
 #' @import glue
 #' @rdname extract_features
