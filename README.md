@@ -15,6 +15,7 @@ remotes::install_github("dokato/natML")
 library(nat)
 library(natML)
 
+# named or unnamed list of features
 features_list <- list("upstream", "downstream", "voxels", "cellBodyFiber", get_cable_length)
 
 kc_features <- extract_features(
