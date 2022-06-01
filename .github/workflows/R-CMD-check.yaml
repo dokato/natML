@@ -55,8 +55,8 @@ jobs:
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
       - name: Install Covr
-        run: Rscript -e "remotes::install_github('r-lib/covr')"
-        
+        run: Rscript -e "install.packages('covr')"
+
       - name: Check
         run: Rscript -e "rcmdcheck::rcmdcheck(args = c('--no-manual', '--as-cran'), error_on = 'warning', check_dir = 'check')"
 
