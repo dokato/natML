@@ -8,6 +8,9 @@
 #' @param to_numeric flag that says whether all factor/ character features are
 #' meant to be transformed to numeric (default: F)
 #' @param normalise what normalization to use
+#' @param split_proportion if numeric then it splits dataset into train test.
+#'    The number should be a target proportion of test cases (although not
+#'    guaranteed as it makes sure that there's at least one element per class).
 #'
 #' @return data frame with features
 #' @export
@@ -23,7 +26,8 @@ extract_features <- function(neurons_list,
                              features_list = NULL,
                              y = NULL,
                              to_numeric = FALSE,
-                             normalise = c("none", "zscore", "scale")) {
+                             normalise = c("none", "zscore", "scale"),
+                             split_proportion = NULL) {
   if (!(class(features_list) %in% c("list", "character")))
     stop("Wrong features_list types. Check the docs!")
   UseMethod('extract_features')
@@ -38,6 +42,7 @@ extract_features.neuronlist <- function(neurons_list, features_list = NULL,
                                         y = NULL,
                                         to_numeric = FALSE,
                                         normalise = c("none", "zscore", "scale"),
+                                        split_proportion = NULL,
                                         ...) {
   normalise <- match.arg(normalise)
 
@@ -65,7 +70,17 @@ extract_features.neuronlist <- function(neurons_list, features_list = NULL,
       features_df[names(y)] <- .get_feature(neurons_list, y, as_factor = TRUE)
   }
   rownames(features_df) <- rownames(neurons_list[,])
-  features_df
+  if (is.null(split_proportion))
+    return(features_df)
+  else {
+    if (is.null(y)) stop("To make splits you need to define Y")
+    y_name <- if (is.null(names(y))) "Y" else names(y)
+    splits <- split_test_train(features_df[[y_name]], split_proportion)
+    list(
+      train = features_df[splits$trainids,],
+      test  = features_df[splits$testids,]
+    )
+  }
 }
 
 
