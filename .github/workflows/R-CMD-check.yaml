@@ -56,6 +56,9 @@ jobs:
           sudo -s eval "$sysreqs"
       - name: Install Covr
         run: Rscript -e "install.packages('covr')"
+  
+      - name: Install rcmdcheck
+        run: Rscript -e "install.packages('rcmdcheck')"
 
       - name: Check
         run: Rscript -e "rcmdcheck::rcmdcheck(args = c('--no-manual', '--as-cran'), error_on = 'warning', check_dir = 'check')"
