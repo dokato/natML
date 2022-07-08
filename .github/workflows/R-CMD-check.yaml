@@ -57,8 +57,11 @@ jobs:
       - name: Install Covr
         run: Rscript -e "install.packages('covr')"
   
-      - name: Install rcmdcheck
-        run: Rscript -e "install.packages('rcmdcheck')"
+      - name: Install rcmdcheck and devtools
+        run: Rscript -e "install.packages(c('rcmdcheck', 'devtools'))"
+
+      - name: Install package
+        run: Rscript -e "devtools::install()"
 
       - name: Check
         run: Rscript -e "rcmdcheck::rcmdcheck(args = c('--no-manual', '--as-cran'), error_on = 'warning', check_dir = 'check')"
