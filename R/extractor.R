@@ -78,7 +78,6 @@ extract_features.neuronlist <- function(neurons_list, features_list = NULL,
     prev_names <- rownames(features_df)
     features_df <- na.omit(features_df)
     diff <- setdiff(prev_names, rownames(features_df))
-    print(diff)
     if (length(diff) > 0) {
       warning(paste("Neurons with NA values removed:", diff))
     }
