@@ -11,6 +11,7 @@
 #' @param split_proportion if numeric then it splits dataset into train test.
 #'    The number should be a target proportion of test cases (although not
 #'    guaranteed as it makes sure that there's at least one element per class).
+#' @param remove_nas flags whether to remove NAs or not
 #'
 #' @return data frame with features
 #' @export
@@ -27,7 +28,8 @@ extract_features <- function(neurons_list,
                              y = NULL,
                              to_numeric = FALSE,
                              normalise = c("none", "zscore", "scale"),
-                             split_proportion = NULL) {
+                             split_proportion = NULL,
+                             remove_nas = TRUE) {
   if (!(class(features_list) %in% c("list", "character")))
     stop("Wrong features_list types. Check the docs!")
   UseMethod('extract_features')
@@ -37,12 +39,14 @@ extract_features <- function(neurons_list,
 #' @param ... extra arguments
 #' @export
 #' @import glue
+#' @importFrom stats na.omit
 #' @rdname extract_features
 extract_features.neuronlist <- function(neurons_list, features_list = NULL,
                                         y = NULL,
                                         to_numeric = FALSE,
                                         normalise = c("none", "zscore", "scale"),
                                         split_proportion = NULL,
+                                        remove_nas = TRUE,
                                         ...) {
   normalise <- match.arg(normalise)
 
@@ -70,6 +74,16 @@ extract_features.neuronlist <- function(neurons_list, features_list = NULL,
       features_df[names(y)] <- .get_feature(neurons_list, y, as_factor = TRUE)
   }
   rownames(features_df) <- rownames(neurons_list[,])
+  if (isTRUE(remove_nas)) {
+    prev_names <- rownames(features_df)
+    features_df <- na.omit(features_df)
+    diff <- setdiff(prev_names, rownames(features_df))
+    print(diff)
+    if (length(diff) > 0) {
+      warning(paste("Neurons with NA values removed:", diff))
+    }
+    rm(prev_names, diff)
+  }
   if (is.null(split_proportion))
     return(features_df)
   else {

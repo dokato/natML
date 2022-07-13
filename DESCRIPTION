@@ -1,9 +1,9 @@
 Package: natML
 Type: Package
 Title: Machine Learning Tools for Nat.
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Version: 0.0.2
+Authors@R: person("Dominik", "Krzeminski", email="dkk33@cam.ac.uk",
+                  role = c("aut", "cre"), comment = c(ORCID = "0000-0003-4568-0583"))
 Description: The package provides a set of utils for transformit a `neuronlist`
     data structure to a feature matrix accepted by various R machine learning
     packages.

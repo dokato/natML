@@ -20,3 +20,4 @@ test_that("test .get_feature with function", {
   expect_equal(class(res), "numeric")
   expect_equal(length(res), length(nl))
 })
+

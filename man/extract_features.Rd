@@ -11,7 +11,8 @@ extract_features(
   y = NULL,
   to_numeric = FALSE,
   normalise = c("none", "zscore", "scale"),
-  split_proportion = NULL
+  split_proportion = NULL,
+  remove_nas = TRUE
 )
 
 \method{extract_features}{neuronlist}(
@@ -21,6 +22,7 @@ extract_features(
   to_numeric = FALSE,
   normalise = c("none", "zscore", "scale"),
   split_proportion = NULL,
+  remove_nas = TRUE,
   ...
 )
 }
@@ -41,6 +43,8 @@ meant to be transformed to numeric (default: F)}
 \item{split_proportion}{if numeric then it splits dataset into train test.
 The number should be a target proportion of test cases (although not
 guaranteed as it makes sure that there's at least one element per class).}
+
+\item{remove_nas}{flags whether to remove NAs or not}
 
 \item{...}{extra arguments}
 }
