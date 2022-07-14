@@ -56,7 +56,7 @@ jobs:
         run: Rscript -e "devtools::install()"
 
       - name: Check
-        run: Rscript -e "rcmdcheck::rcmdcheck(args = c('--no-manual', '--as-cran'), error_on = 'warning', check_dir = 'check')"
+        run: Rscript -e "rcmdcheck::rcmdcheck(args = c('--no-manual', '--as-cran'), build_args=c('--resave-data'), error_on = 'warning', check_dir = 'check')"
 
       - name: Upload check results
         if: failure()
