@@ -46,6 +46,10 @@ jobs:
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
 
+      - name: Additional dependency to make igraph work on Linux
+        if: runner.os == 'ubuntu-20.04'
+        run: sudo apt-get install -y libglpk-dev 
+
       - name: Install Covr
         run: Rscript -e "install.packages('covr')"
   
