@@ -1,7 +1,7 @@
 #' Split into test train sets
 #'
 #' It makes sure that there is at least one representative of each class
-#' in the test test
+#' in the test set
 #'
 #' @param yclass any vector with Y labels
 #' @param split_prop proportion of test samples
