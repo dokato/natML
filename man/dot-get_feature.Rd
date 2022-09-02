@@ -4,7 +4,7 @@
 \alias{.get_feature}
 \title{Get feature}
 \usage{
-.get_feature(neurons_list, feature, as_factor = FALSE)
+.get_feature(neurons_list, feature, as_factor = FALSE, n_jobs = 1)
 }
 \arguments{
 \item{neurons_list}{neuronlist of neurons}
@@ -12,6 +12,8 @@
 \item{feature}{callable or character with feature}
 
 \item{as_factor}{flag saying whether feature should be transformed to factor}
+
+\item{n_jobs}{number of cores used to call a function feature extraction}
 }
 \value{
 vector with feature values

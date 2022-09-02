@@ -12,6 +12,7 @@
 #'    The number should be a target proportion of test cases (although not
 #'    guaranteed as it makes sure that there's at least one element per class).
 #' @param remove_nas flags whether to remove NAs or not
+#' @param n_jobs number of cores used to call a function feature extraction
 #'
 #' @return data frame with features
 #' @export
@@ -29,7 +30,8 @@ extract_features <- function(neurons_list,
                              to_numeric = FALSE,
                              normalise = c("none", "zscore", "scale"),
                              split_proportion = NULL,
-                             remove_nas = TRUE) {
+                             remove_nas = TRUE,
+                             n_jobs = 1) {
   if (!(class(features_list) %in% c("list", "character")))
     stop("Wrong features_list types. Check the docs!")
   UseMethod('extract_features')
@@ -78,7 +80,6 @@ extract_features.neuronlist <- function(neurons_list, features_list = NULL,
     prev_names <- rownames(features_df)
     features_df <- na.omit(features_df)
     diff <- setdiff(prev_names, rownames(features_df))
-    print(diff)
     if (length(diff) > 0) {
       warning(paste("Neurons with NA values removed:", diff))
     }
@@ -105,9 +106,10 @@ extract_features.neuronlist <- function(neurons_list, features_list = NULL,
 #' @param neurons_list neuronlist of neurons
 #' @param feature callable or character with feature
 #' @param as_factor flag saying whether feature should be transformed to factor
+#' @param n_jobs number of cores used to call a function feature extraction
 #'
 #' @return vector with feature values
-.get_feature <- function(neurons_list, feature, as_factor = FALSE) {
+.get_feature <- function(neurons_list, feature, as_factor=FALSE, n_jobs=1) {
   feat_type <- class(feature)
   if (feat_type == "character") {
     if (feature %in% colnames(neurons_list[,]))
@@ -115,7 +117,11 @@ extract_features.neuronlist <- function(neurons_list, features_list = NULL,
     else
       stop(glue("`{feature}` column does not exists in neurons metadata"))
   } else if (feat_type == "function") {
-    out <- sapply(neurons_list, feature)
+    if (n_jobs > 1) {
+      out <- mcsapply(neurons_list, feature, mc.cores = n_jobs)
+    } else {
+      out <- sapply(neurons_list, feature)
+    }
   } else {
     stop(glue("Not recognised type (`{feat_type}`) of feature: `{feature}`"))
   }
@@ -124,6 +130,30 @@ extract_features.neuronlist <- function(neurons_list, features_list = NULL,
   out
 }
 
+#' Multiple core sapply
+#'
+#' This is just a wrapper on \code{mclapply} from \code{parallel}
+#' package that makes it look as \code{sapply}. Inspired by SO Q #31050556
+#' @param X a vector (atomic or list) or an expression object. Other objects
+#' (including classed objects) will be coerced by base::as.list.
+#' @param FUN the function to be applied to each element of X: see ‘Details’
+#' in \code{sapply}.
+#' @param simplify logical or character string; should the result be
+#' simplified to a vector, matrix or higher dimensional array if possible?
+#' Details in \code{sapply}.
+#' @param USE.NAMES	logical; if TRUE and if X is character, use
+#' X as names for the result unless it had names already. Since this
+#' argument follows ... its name cannot be abbreviated.
+#' @import parallel
+mcsapply <- function (X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE) {
+  FUN <- match.fun(FUN)
+  answer <- parallel::mclapply(X = X, FUN = FUN, ...)
+  if (USE.NAMES && is.character(X) && is.null(names(answer)))
+    names(answer) <- X
+  if (!isFALSE(simplify) && length(answer))
+    simplify2array(answer, higher = (simplify == "array"))
+  else answer
+}
 
 #' Make feature names
 #'
