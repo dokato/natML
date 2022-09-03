@@ -12,7 +12,8 @@ extract_features(
   to_numeric = FALSE,
   normalise = c("none", "zscore", "scale"),
   split_proportion = NULL,
-  remove_nas = TRUE
+  remove_nas = TRUE,
+  n_jobs = 1
 )
 
 \method{extract_features}{neuronlist}(
@@ -45,6 +46,8 @@ The number should be a target proportion of test cases (although not
 guaranteed as it makes sure that there's at least one element per class).}
 
 \item{remove_nas}{flags whether to remove NAs or not}
+
+\item{n_jobs}{number of cores used to call a function feature extraction}
 
 \item{...}{extra arguments}
 }
